@@ -23,11 +23,20 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class VerticalReport {
 
     private String dir;
+    private String export;
     private List<FolderReport> reports = null;
     private Logic logic = Logic.getInstance();
 
     public VerticalReport(String dir) {
         this.dir = dir;
+        this.export = dir;
+    }
+
+    public VerticalReport(String dir,String export) {
+        this.dir = dir;
+        if(export == null)
+            export = dir;
+        this.export = export;
     }
 
     private List<FolderReport> generate() throws IOException {
@@ -135,7 +144,7 @@ public class VerticalReport {
         }
 
         // Write the output to a file
-        FileOutputStream fileOut = new FileOutputStream(dir+File.separator+"report.xlsx");
+        FileOutputStream fileOut = new FileOutputStream(export+File.separator+"report.xlsx");
         workbook.write(fileOut);
         fileOut.close();
 
@@ -151,7 +160,7 @@ public class VerticalReport {
             ans.append(first ? "" : ",").append(f.toJson());
             first = false;
         }
-        PrintWriter writer = new PrintWriter(dir+File.separator+"report.json", "UTF-8");
+        PrintWriter writer = new PrintWriter(export+File.separator+"report.json", "UTF-8");
         writer.print(ans);
         writer.close();
     }

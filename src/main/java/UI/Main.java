@@ -8,6 +8,7 @@ import Classes.Logic.VerticalReport;
 import Classes.Utils.Utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,8 +67,9 @@ public class Main {
                 System.out.println("\t <13>Copy " + directories[0]);
                 System.out.println("\t <14>Copy " + directories[1]);
                 System.out.println("\t <15>Copy " + directories[2]);
+                System.out.println("\t <16>Generate report");
+                System.out.println("\t <17>Print settings");
 
-                System.out.println("\t <16>Print settings");
 
 
                 option = in.nextLine();
@@ -135,11 +137,14 @@ public class Main {
                 copyAll(false,false,true);
                 break;
             case 16:
+                generateReport();
+                break;
+            case 17:
                 System.out.println("*************************SETTINGS**********************");
                 printAll();
                 System.out.println("*******************************************************");
                 break;
-            case 17:
+            case 18:
                 System.out.println("Debug is " +(DEBUG = !DEBUG));
                 break;
             default:
@@ -288,14 +293,21 @@ public class Main {
             System.out.println("*************************END COPY**********************");
         }
 
-        VerticalReport report = new VerticalReport(sources.get(directories[0]));
-        report.toExcel();
-        report.toJson();
+
+
+        generateReport();
 
         System.out.println("Progress completed");
 
-
     }
+
+    public void generateReport() throws Exception {
+        VerticalReport report = new VerticalReport(destination.get(directories[0]));
+        report.toExcel();
+        report.toJson();
+    }
+
+
 
 
     private boolean copy(String source, String destination, boolean api, boolean replace, boolean searchInFile) throws Exception {
